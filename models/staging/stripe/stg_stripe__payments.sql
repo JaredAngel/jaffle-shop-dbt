@@ -7,4 +7,4 @@ SELECT
     created AS payment_created,
     _batched_at
 FROM
-    dbt-tutorial.stripe.payment
+    {{ source('stripe', 'payment') }}

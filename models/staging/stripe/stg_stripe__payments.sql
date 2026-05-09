@@ -3,7 +3,7 @@ SELECT
     orderid AS order_id,
     paymentmethod AS payment_method,
     status AS payment_status,
-    amount AS payment_amount,
+    amount / 100 AS payment_amount,
     created AS payment_created,
     _batched_at
 FROM

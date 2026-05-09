@@ -1,20 +1,15 @@
 WITH customers AS (
     SELECT
-        id AS customer_id,
-        first_name,
-        last_name
+        *
     FROM
-        dbt-tutorial.jaffle_shop.customers
+        {{ ref('stg_jaffle_shop__customers') }}
 ),
 
 orders AS (
     SELECT
-        id AS order_id,
-        user_id AS customer_id,
-        order_date,
-        status
+        *
     FROM
-        dbt-tutorial.jaffle_shop.orders
+        {{ ref('fct_orders') }}
 ),
 
 customer_orders AS (
@@ -23,7 +18,8 @@ customer_orders AS (
 
         MIN(order_date) AS first_order_date,
         MAX(order_date) AS most_recent_order_date,
-        COUNT(order_id) AS numbers_of_orders
+        COUNT(order_id) AS numbers_of_orders,
+        SUM(amount) AS lifetime_value
     FROM 
         orders
     GROUP BY customer_id
@@ -36,7 +32,8 @@ final AS (
         customers.last_name,
         customer_orders.first_order_date,
         customer_orders.most_recent_order_date,
-        COALESCE(customer_orders.numbers_of_orders, 0) AS numbers_of_orders
+        COALESCE(customer_orders.numbers_of_orders, 0) AS numbers_of_orders,
+        customer_orders.lifetime_value
     FROM
         customers
             LEFT JOIN

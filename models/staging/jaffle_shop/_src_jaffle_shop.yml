@@ -16,7 +16,17 @@ sources:
 
     tables:
       - name: customers
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
         config:
           freshness: null
           loaded_at_field: null
       - name: orders
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null

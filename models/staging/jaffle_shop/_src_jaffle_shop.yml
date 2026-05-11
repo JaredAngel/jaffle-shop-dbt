@@ -4,6 +4,7 @@ sources:
   - name: jaffle_shop
     database: dbt-tutorial
     schema: jaffle_shop
+    description: A clone of a PostgreSQL database
     config:
       freshness:
         warn_after:
@@ -16,7 +17,21 @@ sources:
 
     tables:
       - name: customers
+        description: Raw customer data
+        columns:
+          - name: id
+            description: Primary key for the customer data
+            tests:
+              - unique
+              - not_null
         config:
           freshness: null
           loaded_at_field: null
       - name: orders
+        description: Raw orders data
+        columns:
+          - name: id
+            description: Primary key for order data
+            tests:
+              - unique
+              - not_null
